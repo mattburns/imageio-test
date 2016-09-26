@@ -19,6 +19,7 @@ public class ImageIOTest {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("test.jpg").getFile());
 
+        System.out.println("\nTool        : [x, y] = [  x,   y,   z]\n");
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
                 int[] imageioRGB = getRGBUsingImageIO(file, x, y);
