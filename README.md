@@ -2,7 +2,15 @@
 
 I've found some differences with the decoded RGB pixel values output from Java's ImageIO, when compared with Python and ImageMagick. This project is just a simple test case the proves the problem.
 
-Run with
+## Dependencies
+
+Uses the Python Imaging Library (PIL)
+
+    pip install Pillow
+
+And also requires ImageMagick (specifically, the `convert` command)
+
+## Run it!
 
     ./gradlew test
     
