@@ -49,7 +49,11 @@ public class ImageIOTest {
     private int[] getRGBUsingPython(File image, int x, int y) throws IOException {
         String output = runProcess("python src/test/resources/getRGB.py " + image.getAbsolutePath() + " " + x + " " + y);
         String[] parts = output.replace("(", "").replace(")", "").replaceAll(" ", "").split(",");
-        return Arrays.stream(parts).mapToInt(Integer::parseInt).toArray();
+        int[] rgb = new int[3];
+        for (int i = 0 ; i < 3 ; i++){
+            rgb[i] = Integer.parseInt(parts[i]);
+        }
+        return rgb;
     }
 
     private int[] getRGBUsingImageMagick(File image, int x, int y) throws IOException, InterruptedException {
