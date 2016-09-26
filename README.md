@@ -16,6 +16,8 @@ And also requires ImageMagick (specifically, the `convert` command)
     
 ## Here's the output on OSX:
 
+    Tool        : [x, y] = [  r,   g,   b]
+    
     Image IO    : [0, 0] = [145, 146, 164]
     Python      : [0, 0] = [145, 146, 164]
     ImageMagick : [0, 0] = [145, 146, 164]
@@ -55,6 +57,8 @@ And also requires ImageMagick (specifically, the `convert` command)
 
 ## Here's the output on Ubuntu:
 
+    Tool        : [x, y] = [  r,   g,   b]
+
     Image IO    : [0, 0] = [145, 146, 164] 
     Python      : [0, 0] = [145, 146, 164]
     ImageMagick : [0, 0] = [145, 146, 164]
@@ -90,8 +94,6 @@ And also requires ImageMagick (specifically, the `convert` command)
     Image IO    : [2, 2] = [144, 148, 157] 
     Python      : [2, 2] = [144, 148, 157]
     ImageMagick : [2, 2] = [144, 148, 157]
-
-
 
 ## Conclusion
 
