@@ -4,7 +4,12 @@ import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.color.ICC_ColorSpace;
+import java.awt.color.ICC_Profile;
+import java.awt.color.ICC_ProfileRGB;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +19,9 @@ import java.util.Arrays;
 
 public class ImageIOTest {
 
+    public ImageIOTest() throws IOException {
+    }
+
     @Test
     public void can_read_file() throws IOException, InterruptedException, URISyntaxException {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -22,24 +30,42 @@ public class ImageIOTest {
         System.out.println("\nTool        : [x, y] = [  r,   g,   b]\n");
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                int[] imageioRGB = getRGBUsingImageIO(file, x, y);
-                int[] pythonRGB = getRGBUsingPython(file, x, y);
-                int[] imageMagickRGB = getRGBUsingImageMagick(file, x, y);
+                int[] imageio1RGB = getRGBUsingImageIO1(file, x, y);
+                int[] imageio2RGB = getRGBUsingImageIO2(file, x, y);
+                //int[] pythonRGB = getRGBUsingPython(file, x, y);
+                //int[] imageMagickRGB = getRGBUsingImageMagick(file, x, y);
 
                 String diff = "";
-                if (!Arrays.equals(imageioRGB, pythonRGB)) {
-                    diff = "<--- different to python";
-                }
-                System.out.printf("Image IO    : [%d, %d] = %s %s\n", x, y, Arrays.toString(imageioRGB), diff);
-                System.out.printf("Python      : [%d, %d] = %s\n", x, y, Arrays.toString(pythonRGB));
-                System.out.printf("ImageMagick : [%d, %d] = %s\n\n", x, y, Arrays.toString(imageMagickRGB));
+                //if (!Arrays.equals(imageioRGB, pythonRGB)) {
+                //    diff = "<--- different to python";
+                //}
+                System.out.printf("Image IO 1  : [%d, %d] = %s %s\n", x, y, Arrays.toString(imageio1RGB), diff);
+                System.out.printf("Image IO 2  : [%d, %d] = %s %s\n", x, y, Arrays.toString(imageio2RGB), diff);
+                //System.out.printf("Python      : [%d, %d] = %s\n", x, y, Arrays.toString(pythonRGB));
+                //System.out.printf("ImageMagick : [%d, %d] = %s\n\n", x, y, Arrays.toString(imageMagickRGB));
             }
         }
     }
 
-    private int[] getRGBUsingImageIO(File file, int x, int y) throws IOException {
+    private int[] getRGBUsingImageIO1(File file, int x, int y) throws IOException {
         BufferedImage image = ImageIO.read(file);
+
         int javaRGB = image.getRGB(x, y);
+        int javaRed = (javaRGB >> 16) & 0xFF;
+        int javaGreen = (javaRGB >> 8) & 0xFF;
+        int javaBlue = (javaRGB >> 0) & 0xFF;
+
+        return new int[]{javaRed, javaGreen, javaBlue};
+    }
+
+    private ICC_Profile cp = ICC_Profile.getInstance("src/test/resources/sRGB_ICC_v4_Appearance.icc");
+    private ICC_ColorSpace cs = new ICC_ColorSpace(cp);
+
+    private int[] getRGBUsingImageIO2(File file, int x, int y) throws IOException {
+        BufferedImage image = ImageIO.read(file);
+        ColorConvertOp cco = new ColorConvertOp( cs, null );
+        BufferedImage result = cco.filter( image, null );
+        int javaRGB = result.getRGB(x, y);
         int javaRed = (javaRGB >> 16) & 0xFF;
         int javaGreen = (javaRGB >> 8) & 0xFF;
         int javaBlue = (javaRGB >> 0) & 0xFF;
