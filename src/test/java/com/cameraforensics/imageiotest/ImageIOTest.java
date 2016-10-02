@@ -4,10 +4,8 @@ import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
-import java.awt.color.ICC_ProfileRGB;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.BufferedReader;
@@ -32,17 +30,17 @@ public class ImageIOTest {
             for (int x = 0; x < 3; x++) {
                 int[] imageio1RGB = getRGBUsingImageIO1(file, x, y);
                 int[] imageio2RGB = getRGBUsingImageIO2(file, x, y);
-                //int[] pythonRGB = getRGBUsingPython(file, x, y);
-                //int[] imageMagickRGB = getRGBUsingImageMagick(file, x, y);
+                int[] pythonRGB = getRGBUsingPython(file, x, y);
+                int[] imageMagickRGB = getRGBUsingImageMagick(file, x, y);
 
                 String diff = "";
-                //if (!Arrays.equals(imageioRGB, pythonRGB)) {
-                //    diff = "<--- different to python";
-                //}
+                if (!Arrays.equals(imageio1RGB, pythonRGB)) {
+                    diff = "<--- different to python";
+                }
                 System.out.printf("Image IO 1  : [%d, %d] = %s %s\n", x, y, Arrays.toString(imageio1RGB), diff);
                 System.out.printf("Image IO 2  : [%d, %d] = %s %s\n", x, y, Arrays.toString(imageio2RGB), diff);
-                //System.out.printf("Python      : [%d, %d] = %s\n", x, y, Arrays.toString(pythonRGB));
-                //System.out.printf("ImageMagick : [%d, %d] = %s\n\n", x, y, Arrays.toString(imageMagickRGB));
+                System.out.printf("Python      : [%d, %d] = %s\n", x, y, Arrays.toString(pythonRGB));
+                System.out.printf("ImageMagick : [%d, %d] = %s\n\n", x, y, Arrays.toString(imageMagickRGB));
             }
         }
     }
